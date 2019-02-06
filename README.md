@@ -15,4 +15,4 @@ There is what the data set looks like:<br />
 
 ## Tableau 
 
-All the code could be obtained from [Jupyter Notebook]()). 
+All the code could be obtained from [Jupyter Notebook](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/SARIMAX.ipynb)). 
