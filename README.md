@@ -5,7 +5,7 @@ Since last semester I finished the course STAT 5511 Time Series Analysis, I have
 ## Air Passenger Data
 There we go the dataset: the Kaggle dataset I chose is called Air Passenger Data which contains monthly data on the number of airline passengers from 1949–1961. Raw data could be downloaded from [here](https://www.kaggle.com/rakannimer/air-passengers). Let’s take a look at what’s going on! <br />
 There is what the data set looks like:<br />
-![The head 5 lines of the data set](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/images/Pic1.png)<br />
+
 
 ## ARIMA
 
