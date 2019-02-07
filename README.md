@@ -18,15 +18,48 @@ Then the following one is **ARIMA model** (Auto-Regressive Integrated Moving Ave
 
 Finally, we move on to **SARIMAX**. The **S** stands for **Seasonal** -- it helps to model recurring patterns. These seasonal patterns don't necessarily have to occur annually per se actually. For instance, if we were modeling metro traffic in a busy urban area, the patterns would repeat on a weekly scale. And the **X** is for **eXogenous**. This term allows for external variables to be added to the model, such as weather forecasts. <br />
 
-A **SARIMAX model** takes the form of **SARIMAX(p,d,q) x (P,D,Q)m**, where **p** is the **AR** term, **d** is the **I** term, and **q** is for the **MA** part. As for the capital ones, **P**, **D** and **Q** are the same terms but related to the **seasonal component**. The lowercase m is the number of seasonal periods before the pattern repeats. For example, if you are working with monthly data, like in this project, m will be 12. When implemented, these parameters will be integers, and smaller numbers are usually better, which also means less complex in general. For my model, the parameters I have chosen which best fit the model are **SARIMAX(2,1,2)x(0,2,2)12**.<br />![Figure3](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/images/Figure3.png)<br /><br />
+A **SARIMAX model** takes the form of **SARIMAX(p,d,q) x (P,D,Q)m**, where **p** is the **AR** term, **d** is the **I** term, and **q** is for the **MA** part. As for the capital ones, **P**, **D** and **Q** are the same terms but related to the **seasonal component**. The lowercase m is the number of seasonal periods before the pattern repeats. For example, if you are working with monthly data, like in this project, m will be 12. When implemented, these parameters will be integers, and smaller numbers are usually better, which also means less complex in general. For my model, the parameters I have chosen which best fit the model are **SARIMAX(2,1,2)x(0,2,2)12**.<br />
 
-To get the ideal parameters, I performed a grid search to arrive at these terms. The error I sought to minimize is the [**Akaike Information Criterion**](https://en.wikipedia.org/wiki/Akaike_information_criterion)(**AIC**). The AIC is a measure of how well the model fits the data, while penalizing comlexity. In the later part of Tableau dashboards, I report Mean Squared Error because that is much more intuitive.<br />
+To get the ideal parameters, I performed a grid search to arrive at these terms. The error I sought to minimize is the [**Akaike Information Criterion**](https://en.wikipedia.org/wiki/Akaike_information_criterion)(**AIC**), which is conveniently returned with SARIMAX model fitted using `statsmodels`. The AIC is a measure of how well the model fits the data, while penalizing comlexity. A model that fits the data very well while using lots of features will be assigned a larger AIC score than a model that uses fewer features to achieve the same goodness-of-fit. In the later part of Tableau dashboards, I report Mean Squared Error because that is much more intuitive.<br />
 
 ## SARIMAX in Python
-Usually for the course assignment, I was asked to accomplish all the homeworks by **R**. I'm always curious about how it works using Python. Therefore, in this project, I tried **Python** to do all the time series analysis. 
+Usually for the course assignment, I was asked to accomplish all the homeworks by **R**. But meanwhile, I'm always curious about how it works using Python. Therefore, in this project, I tried **Python** to do all the time series analysis. <br />
+The library I used in Python is called `**statsmodels.tsa**`, which contains model classes and functions that are useful for time series analysis. Basic models include univariate autoregressive models(AR), vector autoregressive models(VAR) and univariate autoregressive moving average models(ARMA). Estimation is either done by exact or conditional Maximum Likelihood or conditional least-squares, either using Kalman Filter or direct filters (not very sure about the last two ones)
 
 ## Final Result
+### Parameter Selection for the SARIMAX Model
+The final model I chose is like this:<br /><br />![Figure3](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/images/Figure3.png)<br /><br />
+I fit the model by Maximum Likelihood via Kalman filter. The output of our code suggests that SARIMAX(2,1,2)x(0,2,2)12 yields the lowest AIC value of 715.157. Therefore, this result should be considered to be optimal option out of all the models I have considered.<br />
+
+### Fit a SARIMAX model
+Next step I plug the optimal parameter values into a new SARIMAX model. The `summary` attribute that results from the output of SARIMAX returns a significant amount of information. The table of coefficients shown below:<br /><br />![Figure4](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/images/Figure4.png)<br /><br />
+The `coef` column shows the weight of each feature and how each one impacts the time series. The `P>|z|` column informs us of the significance of each feature weight. Here, each weight has a p-value lower or close to 0.05, so it is reasonable to retain all of them in my model.<br />
+
+When fitting SARIMAX models (and any other models for that matter), it is important to run model diagnostics to ensure that none of the assumptions made by the model have been violated. The `plot_diagnostics` object allows us to quickly generate model diagonostics and investigate for any unusual behavior. <br /><br />![Figure5](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/images/Figure5.png)<br /><br />
+The primary concern for now is to ensure that the residuals of our model are uncorrelated and normally distributed with zero mean. If the SARIMAX mdoel does not satisfy these properties, it is a obvious indication that it can be further improved. <br />
+In my case, the model diagnostics suggests that the model residuals are normally distributed based on the following:
+* In the top right plot, we can see that the red `KDE` line follows closely with the `N(0,1)` line (where `N(0,1)` is the standard notation for a normal distribution with mean 0 and standard deviation of 1). This is a good indication that the residuals are normally distributed.
+* The Q-Q plot on the bottom left shows that the ordered distribution of residuals (those blue dots) follows the linear trend of the samples taken from a standard normal distribution with `N(0,1)`. Again, this is a strong indication that the residuals are normally distributed.
+* The residuals over time (top left plot) don't display any obvious seasonally and appear to be white noise. This is confirmed by the autocorrelation plot (shown as correlogram in out plot) on the bottom right, which shows that the time series residuals have low correlation with lagged versiosn of itself.<br />
+
+Those observations lead us to conclude that my model produces a satisfactory fit that could help us understand our time series data and forecast future values.<br />
+
+Although we have a pretty goodlooking fit, some parameters of our SARIMAX model could be changed to improve our model fit. For example, our grid search only considered a restricted set of parameter combinations, so we may find better models if we widened the grid search.<br />
+
+### Validating Forecasts
+#### One-step Ahead Forecast
+We have obtained a model for our time series that can now be used to produce forecasts. We start by comapring predicted values to real values of the time series. We start by comparing predicted values to real values of the time series, which will help us understand the accuracy of our forecasts. The `get_prediction()` and `conf_int()` attributes allow us to obtain the values and associated confidence intervals for forecasts of the time series. The `dynamic = False` argument ensuers that we produce one-step ahead forecasts, meaning that forecasts at each point are generated using the full history up to that point.<br />
+
+I plot the real and forecasted values of airplane passengers time series to assess how well my model did. <br /><br />![Figure6](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/images/Figure6.png)<br /><br />
+Overall, the forecasts align with the true values very well, showing an overall increase trend.<br />
+
+
+
+
+
 
 ## Tableau 
 
 All the code could be obtained from [Jupyter Notebook](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/SARIMAX.ipynb). 
+
+## Conclusion
