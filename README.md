@@ -3,7 +3,7 @@
 Since last semester I finished the course STAT 5511 Time Series Analysis, I have been thinking to find a proper dataset to do some time series analysis in order to practice what I have learned in this course. After exploring several Kaggle datasets and competitions, this dataset came into my mind. Since the number of observations of this dataset is not quite large, which is just 144, and this also suits my another goal. I would like to do some practice on data visualization as well. If the dataset size is too large, like the previous projects I did before (around one million), it will be troublesome for me to find a good way to illustrate the information from the data, sometimes it could be impossible to plot a readable graph.<br /><br />
 
 ## Air Passenger Data
-There we go the dataset: the Kaggle dataset I chose is called Air Passenger Data which contains monthly data on the number of airline passengers from 1949–1961. <br />Raw data could be downloaded from [here](https://www.kaggle.com/rakannimer/air-passengers).  Let’s take a look at what’s going on! <br />
+The Kaggle dataset I chose is called Air Passenger Data which contains monthly data on the number of airline passengers from 1949–1961. <br />Raw data could be downloaded from [here](https://www.kaggle.com/rakannimer/air-passengers).  Let’s take a look at what’s going on! <br />
 There is what the data set looks like:<br /> ![Figure1](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/images/Figure1.png)<br /><br />
 The change of the number of passengers as time passes by is ploted below:<br />![Figure2](https://github.com/EchoZhaoo/Air-Passengers-Prediction/blob/master/images/Figure2.png)<br /><br />
 
