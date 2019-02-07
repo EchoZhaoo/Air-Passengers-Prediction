@@ -22,17 +22,10 @@ A SARIMAX model takes the form of SARIMAX(p,d,q) x (P,D,Q)m, where p is the AR t
 
 To get the ideal parameters, I performed a grid search to arrive at these terms. The error I sought to minimize is the [Akaike Information Criterion](https://en.wikipedia.org/wiki/Akaike_information_criterion)(AIC). The AIC is a measure of how well the model fits the data, while penalizing comlexity. In the later part of Tableau dashboards, I report Mean Squared Error because that is much more intuitive.<br />
 
-With that out of the way, let's see what the 
+## SARIMAX in Python
+Usually for the course assignment, I was asked to accomplish all the homeworks by R. I'm always curious about how it works using Python. Therefore, in this project, I tried Python to do all the time series analysis. 
 
-
-
-
-
-
-
-## statsmodels.tsa.statespace.sarimax
-
-## Best Result 
+## Final Result
 
 ## Tableau 
 
