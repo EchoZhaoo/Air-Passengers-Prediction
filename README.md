@@ -67,9 +67,20 @@ As we forecast further out into the future, it is natural for us to become less 
 
 
 ## Tableau 
+### Environment Setting
 Since Tableau released version 10.2 last year which included integration with Python. I would really like to try this function. It is not super straightforward how to use it though, so I though it's a good opportunity to learn and practise this in this project. ARIMA models are not built into Tableau (Tableau's Forecast module uses exponential smoothing), and in this particular case I really need to use the higher predictive capability of the ARIMA algorithm, so TabPy seemed to be my only option. After I did some searching job, it seems not to be a hard job to use TabPy, let's try together!<br />
 
-At the very first start, one should use `pip install tabpy-server` at the terminal (for MacOS) to install TabPy. After the installation,
+At the very first start, one should use `pip install tabpy-server` at the terminal (for MacOS) to install TabPy. After the installation, one need to navigate to the source code contained in `/site-packages` and go subsequently into the `tabpy-server` directory (in my case, on MacOS with Anaconda2 installed in the default loacation, `/anaconda2/lib/python2.7/site-packages/tabpy_server`). From here run `sh startup.sh` or `python tabpy.py` to start up a server. I also need to instruct Tableau to constantly sniff port 9004, which is how Tableau and Python communicate. <br />
+
+To do this, from within Tableau,
+1. Go to Help -> Settings and Performance -> Manage External Service Connection
+2. Select TabPy/External API as an External Service, enter the Server (localhost if running TabPy on the same computer) and the Port (default is 9004)
+3. Press `Test Connection` button, if it works, then you are good to go!
+
+### Parameters Creation
+
+
+### Connection with Python
 
  
 
