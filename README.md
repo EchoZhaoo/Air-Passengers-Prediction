@@ -67,6 +67,9 @@ As we forecast further out into the future, it is natural for us to become less 
 
 
 ## Tableau 
+Since Tableau released version 10.2 last year which included integration with Python. I would really like to try this function. It is not super straightforward how to use it though, so I though it's a good opportunity to learn and practise this in this project. ARIMA models are not built into Tableau (Tableau's Forecast module uses exponential smoothing), and in this particular case I really need to use the higher predictive capability of the ARIMA algorithm, so TabPy seemed to be my only option. After I did some searching job, it seems not to be a hard job to use TabPy, let's try together!<br />
+
+At the very first start, one should use `pip install tabpy-server` at the terminal (for MacOS) to install TabPy. After the installation,
 
  
 
